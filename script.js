@@ -1,6 +1,6 @@
 'use strict';
 
-// Warte 5 Sekunden, bevor der Loader versteckt wird
+// Loader hidden after 5s
 setTimeout(function () {
   const loader = document.querySelector('.loader');
   loader.classList.add('hidden');

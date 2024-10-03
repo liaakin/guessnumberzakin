@@ -43,6 +43,7 @@ startBtnsHidden(5000);
 startBtn[0].addEventListener('click', () => {
   loader.classList.add('hidden');
   message.style.color = '#eee';
+  document.querySelector('.highscore').textContent = 0;
   timer();
 });
 startBtn[1].addEventListener('click', () => rules.classList.remove('hidden'));

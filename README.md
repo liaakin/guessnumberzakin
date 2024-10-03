@@ -5,7 +5,8 @@
 
  Features ✨
 - Simple and intuitive user interface.
-- Loader 
+- Loader
+- Timer
 - Real-time feedback for each guess.
 - Keeps track of the number of attempts.
 - Reset option to play again.

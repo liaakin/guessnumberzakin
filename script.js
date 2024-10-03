@@ -1,10 +1,56 @@
 'use strict';
 
-// Loader hidden after 5s
-setTimeout(function () {
-  const loader = document.querySelector('.loader');
+/////// Loader, Start, Timer, Quit and Rules Features //////////////////////
+const startBtn = document.querySelectorAll('.startBtn');
+const startBtns = document.querySelector('.start');
+const loader = document.querySelector('.loader');
+const rules = document.querySelector('.rulesWindow');
+
+const timerDisplay = document.getElementById('timer');
+
+// Timer function
+const timer = function () {
+  let timeLeft = 10;
+  timerDisplay.textContent = timeLeft;
+  const countdown = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+    if (timeLeft === 0) {
+      displayMessage('Time is up! You lost!');
+      clearInterval(countdown);
+      document.querySelector('.check').disabled = true;
+    }
+  }, 1000);
+};
+// Start Buttons display after 5s
+const startBtnsHidden = function (s) {
+  setTimeout(() => {
+    startBtns.classList.remove('hidden');
+  }, s);
+};
+startBtnsHidden(5000);
+// Homepage Start and Rules Buttons
+startBtn[0].addEventListener('click', function () {
   loader.classList.add('hidden');
-}, 5000);
+  timer();
+});
+startBtn[1].addEventListener('click', function () {
+  rules.classList.remove('hidden');
+});
+// Rules Window Close
+document.querySelector('.rulesClose').addEventListener('click', function () {
+  rules.classList.add('hidden');
+});
+
+// Game Quit
+document.querySelector('.quit').addEventListener('click', function () {
+  loader.classList.remove('hidden');
+  startBtns.classList.add('hidden');
+  startBtnsHidden(6000);
+  again();
+});
+
+//////////////////////////////////////////////////
 
 // reused variables and funktions:
 let secretNumber = Math.trunc(Math.random() * 20) + 1;
@@ -56,7 +102,7 @@ document.querySelector('.check').addEventListener('click', function () {
 });
 
 // Playing Again-Button:
-document.querySelector('.again').addEventListener('click', function () {
+const again = function () {
   displayMessage('Start guessing...');
   displayScore('20');
   displayNumber('?');
@@ -64,4 +110,6 @@ document.querySelector('.again').addEventListener('click', function () {
   document.querySelector('.guess').value = ' ';
   secretNumber = Math.trunc(Math.random() * 20) + 1;
   score = 20;
-});
+  timer();
+};
+document.querySelector('.again').addEventListener('click', again);

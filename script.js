@@ -5,45 +5,54 @@ const startBtn = document.querySelectorAll('.startBtn');
 const startBtns = document.querySelector('.start');
 const loader = document.querySelector('.loader');
 const rules = document.querySelector('.rulesWindow');
-
+const message = document.querySelector('.message');
 const timerDisplay = document.getElementById('timer');
 
-// Timer function
-const timer = function () {
-  let timeLeft = 10;
+let countdown;
+
+const timer = () => {
+  let timeLeft = 20;
   timerDisplay.textContent = timeLeft;
-  const countdown = setInterval(() => {
+
+  // Quit old timer
+  clearInterval(countdown);
+
+  countdown = setInterval(() => {
     timeLeft--;
     timerDisplay.textContent = timeLeft;
     if (timeLeft === 0) {
       displayMessage('Time is up! You lost!');
+      message.style.color = 'red';
       clearInterval(countdown);
       document.querySelector('.check').disabled = true;
     }
   }, 1000);
 };
+
+// Stop Timer
+const stopTimer = () => clearInterval(countdown);
+
 // Start Buttons display after 5s
-const startBtnsHidden = function (s) {
+const startBtnsHidden = s => {
   setTimeout(() => {
     startBtns.classList.remove('hidden');
   }, s);
 };
 startBtnsHidden(5000);
 // Homepage Start and Rules Buttons
-startBtn[0].addEventListener('click', function () {
+startBtn[0].addEventListener('click', () => {
   loader.classList.add('hidden');
+  message.style.color = '#eee';
   timer();
 });
-startBtn[1].addEventListener('click', function () {
-  rules.classList.remove('hidden');
-});
+startBtn[1].addEventListener('click', () => rules.classList.remove('hidden'));
 // Rules Window Close
-document.querySelector('.rulesClose').addEventListener('click', function () {
-  rules.classList.add('hidden');
-});
+document
+  .querySelector('.rulesClose')
+  .addEventListener('click', () => rules.classList.add('hidden'));
 
 // Game Quit
-document.querySelector('.quit').addEventListener('click', function () {
+document.querySelector('.quit').addEventListener('click', () => {
   loader.classList.remove('hidden');
   startBtns.classList.add('hidden');
   startBtnsHidden(6000);
@@ -82,6 +91,7 @@ document.querySelector('.check').addEventListener('click', function () {
     displayNumber(secretNumber);
     styleChange('green', '30rem');
     let highscore = document.querySelector('.highscore').textContent;
+    stopTimer();
     if (score > highscore) {
       document.querySelector('.highscore').textContent = score;
     }
@@ -97,12 +107,14 @@ document.querySelector('.check').addEventListener('click', function () {
       displayScore('0');
       displayNumber(secretNumber);
       styleChange('red');
+      stopTimer();
     }
   }
 });
 
 // Playing Again-Button:
-const again = function () {
+const again = () => {
+  document.querySelector('.check').disabled = false;
   displayMessage('Start guessing...');
   displayScore('20');
   displayNumber('?');
@@ -110,6 +122,7 @@ const again = function () {
   document.querySelector('.guess').value = ' ';
   secretNumber = Math.trunc(Math.random() * 20) + 1;
   score = 20;
+  message.style.color = '#eee';
   timer();
 };
 document.querySelector('.again').addEventListener('click', again);
